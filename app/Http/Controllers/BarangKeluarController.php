@@ -53,6 +53,7 @@ class BarangKeluarController extends BaseController
             // Validasi inputan
             $request->validate([
                 'id_barang' => 'required',
+                'pembeli' => 'required',
                 'harga_jual' => 'required',
                 'jumlah' => 'required',
                 'tanggal_keluar' => 'required',
@@ -64,6 +65,7 @@ class BarangKeluarController extends BaseController
             // Simpan data ke tabel user
             $BarangKeluar = new BarangKeluar(); // Ubah variabel dari $quiz menjadi $barang untuk kejelasan
             $BarangKeluar->id_barang = $request->input('id_barang');
+            $BarangKeluar->pembeli = $request->input('pembeli');
             $BarangKeluar->harga_jual = $request->input('harga_jual');
             $BarangKeluar->jumlah = $request->input('jumlah');
             $BarangKeluar->tanggal_keluar = $request->input('tanggal_keluar');

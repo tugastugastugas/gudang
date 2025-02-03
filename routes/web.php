@@ -12,7 +12,8 @@ use App\Http\Controllers\RestoreEditController;
 use App\Http\Controllers\RestoreDeleteController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangMasukController;
-use App\Http\Controllers\BarangkeluarController;
+use App\Http\Controllers\BarangKeluarController;
+use App\Http\Controllers\DataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,30 +86,46 @@ Route::get('/user/detail/{id}', [UserController::class, 'detail'])->name('detail
 
 // ROUTE BARANG
 Route::get('/barang', [BarangController::class, 'barang'])
+->middleware('check.permission:item')
     ->name('barang');
-    Route::post('/t_barang', [BarangController::class, 't_barang'])->name('t_barang');
-    Route::post('/barang/update', action: [BarangController::class, 'updateDetail'])->name('update.barang');
-    Route::delete('/barang-destroy/{id_barang}', [BarangController::class, 'barang_destroy'])->name('barang.destroy');
-    Route::get('/barang/detail/{id}', [BarangController::class, 'e_barang'])
-        ->name('e_barang');
+Route::post('/t_barang', [BarangController::class, 't_barang'])->name('t_barang');
+Route::post('/barang/update', action: [BarangController::class, 'updateDetail'])->name('update.barang');
+Route::delete('/barang-destroy/{id_barang}', [BarangController::class, 'barang_destroy'])->name('barang.destroy');
+Route::get('/barang/detail/{id}', [BarangController::class, 'e_barang'])
+->middleware('check.permission:item')
+    ->name('e_barang');
 
-        
+
 // ROUTE BARANG MASUK
 Route::get('/BarangMasuk', [BarangMasukController::class, 'BarangMasuk'])
-->name('BarangMasuk');
+->middleware('check.permission:item')
+    ->name('BarangMasuk');
 Route::post('/t_BarangMasuk', [BarangMasukController::class, 't_BarangMasuk'])->name('t_BarangMasuk');
 Route::post('/BarangMasuk/update', action: [BarangMasukController::class, 'updateDetail'])->name('update.BarangMasuk');
 Route::delete('/BarangMasuk-destroy/{id_masuk}', [BarangMasukController::class, 'BarangMasuk_destroy'])->name('BarangMasuk.destroy');
 Route::get('/BarangMasuk/detail/{id}', [BarangMasukController::class, 'e_BarangMasuk'])
+->middleware('check.permission:item')
     ->name('e_BarangMasuk');
 
 
-            
+
 // ROUTE BARANG Keluar
 Route::get('/BarangKeluar', [BarangKeluarController::class, 'BarangKeluar'])
-->name('BarangKeluar');
+->middleware('check.permission:item')
+    ->name('BarangKeluar');
 Route::post('/t_BarangKeluar', [BarangKeluarController::class, 't_BarangKeluar'])->name('t_BarangKeluar');
 Route::post('/BarangKeluar/update', action: [BarangKeluarController::class, 'updateDetail'])->name('update.BarangKeluar');
 Route::delete('/BarangKeluar-destroy/{id_keluar}', [BarangKeluarController::class, 'BarangKeluar_destroy'])->name('BarangKeluar.destroy');
 Route::get('/BarangKeluar/detail/{id}', [BarangKeluarController::class, 'e_BarangKeluar'])
+->middleware('check.permission:item')
     ->name('e_BarangKeluar');
+
+
+// ROUTE KEUANGAN
+Route::get('/data', [DataController::class, 'data'])
+->middleware('check.permission:data')
+    ->name('data');
+Route::get('/laporan', [DataController::class, 'laporan'])
+->middleware('check.permission:data')
+    ->name('laporan');
+Route::get('/laporan_index', [DataController::class, 'index'])->name('laporan.index');

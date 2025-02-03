@@ -9,18 +9,13 @@
         <form action="{{ route('update.barang') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="exampleInputEmail1">Nama barang</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" name="nama_barang" value="{{ $barang->nama_barang }}">
+                <label for="exampleInputEmail1">Kode barang</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" name="kode_barang" value="{{ $barang->kode_barang }}" disabled>
             </div>
 
             <div class="form-group">
-                <label for="exampleInputEmail1">Harga Beli</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" name="harga_beli" value="{{ $barang->harga_beli }}">
-            </div>
-            
-            <div class="form-group">
-                <label for="exampleInputEmail1">Harga Jual</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" name="harga_jual" value="{{ $barang->harga_jual }}">
+                <label for="exampleInputEmail1">Nama barang</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" name="nama_barang" value="{{ $barang->nama_barang }}">
             </div>
             
             <div class="form-group">

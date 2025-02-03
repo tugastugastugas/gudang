@@ -14,6 +14,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah</th>
                                 <th>Harga Beli</th>
@@ -26,6 +27,7 @@
                             @foreach($BarangMasuk as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->barang->kode_barang }}</td>
                                 <td>{{ $data->barang->nama_barang }}</td>
                                 <td>{{ $data->jumlah }}</td>
                                 <td>{{ $data->harga_beli }}</td>
@@ -49,6 +51,7 @@
                         <tfoot>
                             <tr>
                                 <th>No</th>
+                                <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah</th>
                                 <th>Harga Beli</th>
@@ -81,7 +84,7 @@
                         <select class="form-select" id="id_barang" name="id_barang" required>
                             <option value="" disabled selected>Pilih Barang</option>
                             @foreach ($barang as $j)
-                                <option value="{{ $j->id_barang }}">{{ $j->nama_barang }}</option>
+                            <option value="{{ $j->id_barang }}">{{ $j->nama_barang }} | {{ $j->kode_barang }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -100,7 +103,7 @@
                         <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
                         <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" required>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>

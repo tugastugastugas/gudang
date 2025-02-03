@@ -10,6 +10,11 @@
             @csrf
             <div class="form-group">
                 <label for="exampleInputEmail1">Nama barang</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" name="kode_barang" value="{{ $BarangKeluar->barang->kode_barang  }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Nama barang</label>
                 <input type="text" class="form-control" id="exampleInputEmail1" name="nama_barang" value="{{ $BarangKeluar->barang->nama_barang  }}" disabled>
             </div>
 

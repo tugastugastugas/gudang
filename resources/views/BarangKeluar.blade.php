@@ -14,7 +14,9 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Kode Barang</th>
                                 <th>Nama Barang</th>
+                                <th>Pembeli</th>
                                 <th>Jumlah</th>
                                 <th>Harga Jual</th>
                                 <th>Total Harga</th>
@@ -26,7 +28,9 @@
                             @foreach($BarangKeluar as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->barang->kode_barang }}</td>
                                 <td>{{ $data->barang->nama_barang }}</td>
+                                <td>{{ $data->pembeli }}</td>
                                 <td>{{ $data->jumlah }}</td>
                                 <td>{{ $data->harga_jual }}</td>
                                 <td>{{ $data->total_harga }}</td>
@@ -48,8 +52,10 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                            <th>No</th>
+                                <th>No</th>
+                                <th>Kode Barang</th>
                                 <th>Nama Barang</th>
+                                <th>Pembeli</th>
                                 <th>Jumlah</th>
                                 <th>Harga Jual</th>
                                 <th>Total Harga</th>
@@ -81,9 +87,14 @@
                         <select class="form-select" id="id_barang" name="id_barang" required>
                             <option value="" disabled selected>Pilih Barang</option>
                             @foreach ($barang as $j)
-                                <option value="{{ $j->id_barang }}">{{ $j->nama_barang }}</option>
+                                <option value="{{ $j->id_barang }}">{{ $j->nama_barang }} | {{ $j->kode_barang }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="pembeli" class="form-label">Pembeli</label>
+                        <input type="text" class="form-control" id="pembeli" name="pembeli" required>
                     </div>
 
                     <div class="mb-3">

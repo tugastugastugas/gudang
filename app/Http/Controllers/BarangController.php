@@ -51,20 +51,28 @@ class BarangController extends BaseController
             // Validasi inputan
             $request->validate([
                 'nama_barang' => 'required',
-                'harga_beli' => 'required',
-                'harga_jual' => 'required',
                 'stok' => 'required',
                 'satuan' => 'required',
             ]);
+            
+            $lastBarang = Barang::orderBy('kode_barang', 'desc')->first();
 
+            if ($lastBarang) {
+                // Ambil angka dari kode terakhir dan tambahkan 1
+                $lastNumber = (int) substr($lastBarang->kode_barang, 3);
+                $newNumber = $lastNumber + 1;
+                $kode_barang = 'BRG' . str_pad($newNumber, 7, '0', STR_PAD_LEFT);
+            } else {
+                // Jika belum ada data, mulai dari BRG0000001
+                $kode_barang = 'BRG0000001';
+            }
             $id_user = Session::get('id');
             // Ambil kelas pengguna berdasarkan id_user
        
             // Simpan data ke tabel user
             $barang = new barang(); // Ubah variabel dari $quiz menjadi $barang untuk kejelasan
+            $barang->kode_barang = $kode_barang; 
             $barang->nama_barang = $request->input('nama_barang');
-            $barang->harga_beli = $request->input('harga_beli');
-            $barang->harga_jual = $request->input('harga_jual');
             $barang->stok = $request->input('stok');
             $barang->satuan = $request->input('satuan');
 
@@ -127,8 +135,6 @@ class BarangController extends BaseController
             // Validasi input
             $request->validate([
                 'nama_barang' => 'required',
-                'harga_beli' => 'required',
-                'harga_jual' => 'required',
                 'stok' => 'required',
                 'satuan' => 'required',
             ]);
@@ -138,8 +144,6 @@ class BarangController extends BaseController
 
             // Update data buku
             $barang->nama_barang = $request->nama_barang;
-            $barang->harga_beli = $request->harga_beli;
-            $barang->harga_jual = $request->harga_jual;
             $barang->stok = $request->stok;
             $barang->satuan = $request->satuan;
          
