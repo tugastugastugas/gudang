@@ -20,6 +20,7 @@
                                 <th>Jumlah</th>
                                 <th>Harga Jual</th>
                                 <th>Total Harga</th>
+                                <th>Satuan</th>
                                 <th>Tanggal Keluar</th>
                                 <th>Aksi</th>
                             </tr>
@@ -34,6 +35,7 @@
                                 <td>{{ $data->jumlah }}</td>
                                 <td>{{ $data->harga_jual }}</td>
                                 <td>{{ $data->total_harga }}</td>
+                                <td>{{ $data->barang->satuan }}</td>
                                 <td>{{ $data->tanggal_keluar }}</td>
                                 <td>
                                     <a href="{{ route('e_BarangKeluar', $data->id_keluar) }}">
@@ -59,6 +61,7 @@
                                 <th>Jumlah</th>
                                 <th>Harga Jual</th>
                                 <th>Total Harga</th>
+                                <th>Satuan</th>
                                 <th>Tanggal Keluar</th>
                                 <th>Aksi</th>
                             </tr>

@@ -28,6 +28,14 @@
                 <input type="text" class="form-control" id="exampleInputEmail1" name="satuan" value="{{ $barang->satuan }}">
             </div>
             
+            <div class="form-group">
+                <label for="foto_barang">Foto Barang</label>
+                <input type="file" class="form-control" id="foto_barang" name="foto_barang">
+                @if($barang->foto_barang)
+                <p>Current Cover:</p>
+                <img src="{{ asset('storage/' . $barang->foto_barang) }}" alt="Cover Buku" width="100">
+                @endif
+            </div>
             
             <input type="hidden" name="id" value="{{ $barang->id_barang }}">
 

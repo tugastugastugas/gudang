@@ -18,6 +18,7 @@ class BarangKeluar extends Authenticatable
     // Daftar kolom yang dapat diisi massal
     protected $fillable = [
         'id_barang',
+        'pembeli',
         'jumlah',
         'harga_jual',
         'total_harga',

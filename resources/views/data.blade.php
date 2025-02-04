@@ -11,10 +11,11 @@
                     <table id="datatable" class="table table-striped" data-toggle="data-table">
                         <thead>
                             <tr>
-                                <th>No</th>
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
+                                <th>Supplier</th>
                                 <th>Pembeli</th>
+                                <th>Satuan</th>
                                 <th>Total Harga Beli</th>
                                 <th>Total Harga Jual</th>
                                 <th>Keuntungan / Kerugian</th>
@@ -22,23 +23,25 @@
                         </thead>
                         <tbody>
                             @foreach($data as $data2)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data2->kode_barang }}</td>
-                                <td>{{ $data2->nama_barang }}</td>
-                                <td>{{ $data2->pembeli }}</td>
-                                <td>{{ $data2->total_harga_beli }}</td>
-                                <td>{{ $data2->total_harga_jual }}</td>
-                                <td>{{ $data2->keuntungan_kerugian }}</td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $data2->kode_barang }}</td>
+                                    <td>{{ $data2->nama_barang }}</td>
+                                    <td>{{ $data2->supplier }}</td>
+                                    <td>{{ $data2->pembeli }}</td>
+                                    <td>{{ $data2->satuan }}</td>
+                                    <td>{{ $data2->total_harga_beli }}</td>
+                                    <td>{{ $data2->total_harga_jual }}</td>
+                                    <td>{{ $data2->keuntungan_kerugian }}</td>
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>No</th>
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
+                                <th>Supplier</th>
                                 <th>Pembeli</th>
+                                <th>Satuan</th>
                                 <th>Total Harga Beli</th>
                                 <th>Total Harga Jual</th>
                                 <th>Keuntungan / Kerugian</th>

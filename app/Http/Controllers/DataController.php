@@ -42,11 +42,13 @@ class DataController extends BaseController
                 'b.id_barang',
                 'b.nama_barang',
                 'bk.pembeli',
+                'b.satuan',
+                'bm.supplier',
                 DB::raw('COALESCE(SUM(bm.total_harga), 0) as total_harga_beli'),
                 DB::raw('COALESCE(SUM(bk.total_harga), 0) as total_harga_jual'),
                 DB::raw('(COALESCE(SUM(bk.total_harga), 0) - COALESCE(SUM(bm.total_harga), 0)) as keuntungan_kerugian')
             )
-            ->groupBy('b.id_barang', 'b.nama_barang', 'b.kode_barang', 'bk.pembeli')
+            ->groupBy('b.id_barang', 'b.nama_barang', 'b.kode_barang', 'bk.pembeli', 'bm.supplier', 'b.satuan')
             ->get();
 
         // Tampilkan view dengan data yang telah diambil
@@ -85,6 +87,8 @@ class DataController extends BaseController
                 b.id_barang,
                 b.nama_barang,
                 bk.pembeli,
+                b.satuan,
+                bm.supplier,
                 COALESCE(SUM(bm.total_harga), 0) AS total_harga_beli,
                 COALESCE(SUM(bk.total_harga), 0) AS total_harga_jual,
                 (COALESCE(SUM(bk.total_harga), 0) - COALESCE(SUM(bm.total_harga), 0)) AS keuntungan_kerugian
@@ -97,7 +101,7 @@ class DataController extends BaseController
                 barang_keluar bk ON b.id_barang = bk.id_barang 
                 AND bk.tanggal_keluar BETWEEN ? AND ?
             GROUP BY 
-                b.id_barang, b.nama_barang, b.kode_barang, bk.pembeli
+                b.id_barang, b.nama_barang, b.kode_barang, bk.pembeli, bm.supplier, b.satuan
         ";
         $data = DB::select($query, [$tanggal_awal, $tanggal_akhir, $tanggal_awal, $tanggal_akhir]);
         $pdf = PDF::loadView('laporan.index', compact('data', 'tanggal_awal', 'tanggal_akhir'));

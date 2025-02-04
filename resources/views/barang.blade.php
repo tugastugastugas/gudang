@@ -5,7 +5,8 @@
                 <div class="header-title">
                     <h4 class="card-title">Barang</h4>
                     <br>
-                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addUserModal">Add New Barang</button>
+                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#addUserModal">Add New Barang</button>
                 </div>
             </div>
             <div class="card-body">
@@ -18,30 +19,48 @@
                                 <th>Nama Barang</th>
                                 <th>Stok</th>
                                 <th>Satuan</th>
+                                <th>Foto Barang</th>
+                                <th>Barcode</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($barang as $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->kode_barang }}</td>
-                                <td>{{ $data->nama_barang }}</td>
-                                <td>{{ $data->stok }}</td>
-                                <td>{{ $data->satuan }}</td>
-                                <td>
-                                    <a href="{{ route('e_barang', $data->id_barang) }}">
-                                        <button class="btn btn-danger">
-                                            <i class="now-ui-icons ui-1_check"></i> Edit
-                                        </button>
-                                    </a>
-                                    <form action="{{ route('barang.destroy', $data->id_barang) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $data->kode_barang }}</td>
+                                    <td>{{ $data->nama_barang }}</td>
+                                    <td>{{ $data->stok }}</td>
+                                    <td>{{ $data->satuan }}</td>
+                                    <td>
+                                    @if($data->foto_barang)
+                                    <img src="{{ asset('storage/' . $data->foto_barang) }}" alt="Foto Barang" style="width: 200px; height: auto; cursor: pointer;">
+                                    @else
+                                    No Photos
+                                    @endif
+                                    </td>
+                                    <td>
+                                    @if($data->barcode)
+                                    <img src="{{ asset($data->barcode) }}" alt="Barcode" style="width: 200px; height: auto; cursor: pointer;">
+                                    @else
+                                    No Barcode
+                                    @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('e_barang', $data->id_barang) }}">
+                                            <button class="btn btn-danger">
+                                                <i class="now-ui-icons ui-1_check"></i> Edit
+                                            </button>
+                                        </a>
+                                        <form action="{{ route('barang.destroy', $data->id_barang) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-sm" type="submit"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
@@ -51,6 +70,8 @@
                                 <th>Nama Barang</th>
                                 <th>Stok</th>
                                 <th>Satuan</th>
+                                <th>Foto Barang</th>
+                                <th>Barcode</th>
                                 <th>Aksi</th>
                             </tr>
                         </tfoot>
@@ -70,7 +91,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('t_barang') }}" method="POST">
+                <form action="{{ route('t_barang') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="nama_barang" class="form-label">Nama Barang</label>
@@ -86,7 +107,12 @@
                         <label for="satuan" class="form-label">Satuan</label>
                         <input type="text" class="form-control" id="satuan" name="satuan" required>
                     </div>
-                    
+
+                    <div class="mb-3">
+                        <label for="foto_barang" class="form-label">Foto Barang</label>
+                        <input type="file" class="form-control" id="foto_barang" name="foto_barang" accept="image/*" required>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>

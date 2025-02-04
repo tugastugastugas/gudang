@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Milon\Barcode\DNS1D;
+use Milon\Barcode\DNS2D;
 
 class BarangController extends BaseController
 {
@@ -53,6 +55,7 @@ class BarangController extends BaseController
                 'nama_barang' => 'required',
                 'stok' => 'required',
                 'satuan' => 'required',
+                'foto_barang' => 'required',
             ]);
             
             $lastBarang = Barang::orderBy('kode_barang', 'desc')->first();
@@ -66,15 +69,31 @@ class BarangController extends BaseController
                 // Jika belum ada data, mulai dari BRG0000001
                 $kode_barang = 'BRG0000001';
             }
+    
             $id_user = Session::get('id');
             // Ambil kelas pengguna berdasarkan id_user
-       
+            $dns1d = new DNS1D();
+            $barcodePath = 'uploads/barcode/' . $kode_barang . '.png';
+            $barcodeFullPath = public_path($barcodePath);
+            
+            // Generate barcode dan simpan dalam format PNG
+            $barcodeImage = $dns1d->getBarcodePNG($kode_barang, 'C128', 2, 50, [0, 0, 0], true);
+            file_put_contents($barcodeFullPath, base64_decode($barcodeImage));
+    
             // Simpan data ke tabel user
             $barang = new barang(); // Ubah variabel dari $quiz menjadi $barang untuk kejelasan
             $barang->kode_barang = $kode_barang; 
             $barang->nama_barang = $request->input('nama_barang');
             $barang->stok = $request->input('stok');
             $barang->satuan = $request->input('satuan');
+
+            if ($request->hasFile('foto_barang')) {
+                $foto_barang = $request->file('foto_barang');
+                $foto_barang_name = $foto_barang->getClientOriginalName();  // Mendapatkan nama asli file
+                $barang->foto_barang = $foto_barang->storeAs('foto_barang', $foto_barang_name, 'public');  // Menyimpan dengan nama asli
+            }
+
+            $barang->barcode = $barcodePath;
 
             // Simpan ke database
             $barang->save();
@@ -137,6 +156,7 @@ class BarangController extends BaseController
                 'nama_barang' => 'required',
                 'stok' => 'required',
                 'satuan' => 'required',
+                'foto_barang' => 'required',
             ]);
 
             // Mencari buku berdasarkan ID
@@ -147,6 +167,11 @@ class BarangController extends BaseController
             $barang->stok = $request->stok;
             $barang->satuan = $request->satuan;
          
+            if ($request->hasFile('foto_barang')) {
+                $foto_barang = $request->file('foto_barang');
+                $foto_barang_name = $foto_barang->getClientOriginalName();
+                $barang->foto_barang = $foto_barang->storeAs('foto_barang', $foto_barang_name, 'public');
+            }
 
             // Simpan perubahan
             $barang->save();

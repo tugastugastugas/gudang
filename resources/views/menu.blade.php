@@ -18,7 +18,7 @@ $userLevel =session()->get('level'); // Sesuaikan dengan cara Anda menyimpan lev
                         <rect x="10.5366" y="16.3945" width="16" height="4" rx="2" transform="rotate(45 10.5366 16.3945)" fill="currentColor" />
                         <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2" transform="rotate(45 10.5562 -0.556152)" fill="currentColor" />
                     </svg> -->
-                    <img src="{{ asset('storage/logos/' . optional(App\Models\Setting::first())->logo) }}" alt="Logo" style="max-width: 80px;">
+                    <img src="{{ asset('storage/logos/' . optional(App\Models\Setting::first())->logo) }}" alt="Logo" style="max-width: 150px;">
 
                 </div>
                 <div class="logo-mini">
@@ -39,7 +39,7 @@ $userLevel =session()->get('level'); // Sesuaikan dengan cara Anda menyimpan lev
                     <path d="M10.2998 18.2988L4.2498 12.2748L10.2998 6.24976" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
             </i>
-        </div>
+        </div>https://drive.google.com/drive/folders/1UmCySBvdH64yLdWPkE7nBJ4axgCcjHvZ
     </div>
     <div class="sidebar-body pt-0 data-scrollbar">
         <div class="sidebar-list">

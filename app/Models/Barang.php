@@ -20,6 +20,7 @@ class Barang extends Authenticatable
         'nama_barang',
         'stok',
         'satuan',
+        'foto_barang',
         'created_at',
         'update_at',
     ];

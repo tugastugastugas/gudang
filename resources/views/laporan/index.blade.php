@@ -56,9 +56,11 @@
             <tr>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
+                <th>Supplier</th>
+                <th>Pembeli</th>
+                <th>Satuan</th>
                 <th>Total Harga Beli</th>
                 <th>Total Harga Jual</th>
-                <th>Pembeli</th>
                 <th>Keuntungan/Kerugian</th>
             </tr>
         </thead>
@@ -77,16 +79,18 @@
             <tr>
                 <td style="text-align: center;">{{ $row->kode_barang }}</td>
                 <td style="text-align: left;">{{ $row->nama_barang }}</td>
+                <td style="text-align: left;">{{ $row->supplier }}</td>
+                <td style="text-align: left;">{{ $row->pembeli }}</td>
+                <td style="text-align: left;">{{ $row->satuan }}</td>
                 <td>Rp{{ number_format($row->total_harga_beli, 2, ',', '.') }}</td>
                 <td>Rp{{ number_format($row->total_harga_jual, 2, ',', '.') }}</td>
-                <td style="text-align: left;">{{ $row->pembeli }}</td>
                 <td>Rp{{ number_format($row->keuntungan_kerugian, 2, ',', '.') }}</td>
             </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr class="total-row">
-                <td colspan="3" style="text-align: center;">TOTAL</td>
+                <td colspan="5" style="text-align: center;">TOTAL</td>
                 <td>Rp{{ number_format($total_beli, 2, ',', '.') }}</td>
                 <td>Rp{{ number_format($total_jual, 2, ',', '.') }}</td>
                 <td>Rp{{ number_format($total_keuntungan, 2, ',', '.') }}</td>

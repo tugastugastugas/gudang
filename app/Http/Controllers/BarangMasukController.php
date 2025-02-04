@@ -53,6 +53,7 @@ class BarangMasukController extends BaseController
             // Validasi inputan
             $request->validate([
                 'id_barang' => 'required',
+                'supplier' => 'required',
                 'harga_beli' => 'required',
                 'jumlah' => 'required',
                 'tanggal_masuk' => 'required',
@@ -64,6 +65,7 @@ class BarangMasukController extends BaseController
             // Simpan data ke tabel user
             $BarangMasuk = new BarangMasuk(); // Ubah variabel dari $quiz menjadi $barang untuk kejelasan
             $BarangMasuk->id_barang = $request->input('id_barang');
+            $BarangMasuk->supplier = $request->input('supplier');
             $BarangMasuk->harga_beli = $request->input('harga_beli');
             $BarangMasuk->jumlah = $request->input('jumlah');
             $BarangMasuk->tanggal_masuk = $request->input('tanggal_masuk');
@@ -132,6 +134,7 @@ class BarangMasukController extends BaseController
         try {
             // Validasi input
             $request->validate([
+                'supplier' => 'required',
                 'harga_beli' => 'required',
                 'jumlah' => 'required',
                 'tanggal_masuk' => 'required',
@@ -141,6 +144,7 @@ class BarangMasukController extends BaseController
             $BarangMasuk = BarangMasuk::findOrFail($request->input('id'));
 
             // Update data buku
+            $BarangMasuk->supplier = $request->supplier;
             $BarangMasuk->harga_beli = $request->harga_beli;
             $BarangMasuk->jumlah = $request->jumlah;
             $BarangMasuk->tanggal_masuk = $request->tanggal_masuk;

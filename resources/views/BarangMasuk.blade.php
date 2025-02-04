@@ -16,9 +16,11 @@
                                 <th>No</th>
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
+                                <th>Supplier</th>
                                 <th>Jumlah</th>
                                 <th>Harga Beli</th>
                                 <th>Total Harga</th>
+                                <th>Satuan</th>
                                 <th>Tanggal Masuk</th>
                                 <th>Aksi</th>
                             </tr>
@@ -29,9 +31,11 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->barang->kode_barang }}</td>
                                 <td>{{ $data->barang->nama_barang }}</td>
+                                <td>{{ $data->supplier }}</td>
                                 <td>{{ $data->jumlah }}</td>
                                 <td>{{ $data->harga_beli }}</td>
                                 <td>{{ $data->total_harga }}</td>
+                                <td>{{ $data->barang->satuan }}</td>
                                 <td>{{ $data->tanggal_masuk }}</td>
                                 <td>
                                     <a href="{{ route('e_BarangMasuk', $data->id_masuk) }}">
@@ -53,9 +57,11 @@
                                 <th>No</th>
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
+                                <th>Supplier</th>
                                 <th>Jumlah</th>
                                 <th>Harga Beli</th>
                                 <th>Total Harga</th>
+                                <th>Satuan</th>
                                 <th>Tanggal Masuk</th>
                                 <th>Aksi</th>
                             </tr>
@@ -87,6 +93,11 @@
                             <option value="{{ $j->id_barang }}">{{ $j->nama_barang }} | {{ $j->kode_barang }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="supplier" class="form-label">Supplier</label>
+                        <input type="text" class="form-control" id="supplier" name="supplier" required>
                     </div>
 
                     <div class="mb-3">
