@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class BarangController extends BaseController
 {
@@ -45,65 +47,58 @@ class BarangController extends BaseController
     {
         ActivityLog::create([
             'action' => 'create',
-            'user_id' => Session::get('id'), // ID pengguna yang sedang login
+            'user_id' => Session::get('id'),
             'description' => 'User Menambah Barang.',
         ]);
 
         try {
-            // Validasi inputan
+            // Validasi input
             $request->validate([
                 'nama_barang' => 'required',
                 'stok' => 'required',
                 'satuan' => 'required',
                 'foto_barang' => 'required',
             ]);
-            
-            $lastBarang = Barang::orderBy('kode_barang', 'desc')->first();
 
-            if ($lastBarang) {
-                // Ambil angka dari kode terakhir dan tambahkan 1
-                $lastNumber = (int) substr($lastBarang->kode_barang, 3);
-                $newNumber = $lastNumber + 1;
-                $kode_barang = 'BRG' . str_pad($newNumber, 7, '0', STR_PAD_LEFT);
-            } else {
-                // Jika belum ada data, mulai dari BRG0000001
-                $kode_barang = 'BRG0000001';
+            $lastBarang = Barang::orderBy('kode_barang', 'desc')->first();
+            $kode_barang = $lastBarang ? 'BRG' . str_pad(((int)substr($lastBarang->kode_barang, 3)) + 1, 7, '0', STR_PAD_LEFT) : 'BRG0000001';
+
+            // Generate QR Code
+            $qrCodePath = 'uploads/qrcode/' . $kode_barang . '.png';
+            $qrCodeFullPath = public_path($qrCodePath);
+
+            // Buat folder jika belum ada
+            if (!file_exists(public_path('uploads/qrcode'))) {
+                mkdir(public_path('uploads/qrcode'), 0777, true);
             }
-    
-            $id_user = Session::get('id');
-            // Ambil kelas pengguna berdasarkan id_user
-            $dns1d = new DNS1D();
-            $barcodePath = 'uploads/barcode/' . $kode_barang . '.png';
-            $barcodeFullPath = public_path($barcodePath);
-            
-            // Generate barcode dan simpan dalam format PNG
-            $barcodeImage = $dns1d->getBarcodePNG($kode_barang, 'C128', 2, 50, [0, 0, 0], true);
-            file_put_contents($barcodeFullPath, base64_decode($barcodeImage));
-    
-            // Simpan data ke tabel user
-            $barang = new barang(); // Ubah variabel dari $quiz menjadi $barang untuk kejelasan
-            $barang->kode_barang = $kode_barang; 
+
+            // Menghasilkan QR Code dengan data kode_barang composer require simplesoftwareio/simple-qrcode
+            QrCode::format('png')
+                ->size(300) // Ukuran QR Code
+                ->errorCorrection('H') // Tingkat koreksi kesalahan (L, M, Q, H)
+                ->generate($kode_barang, $qrCodeFullPath); // Menyimpan QR Code ke path yang ditentukan
+
+            // Simpan data barang
+            $barang = new Barang();
+            $barang->kode_barang = $kode_barang;
             $barang->nama_barang = $request->input('nama_barang');
             $barang->stok = $request->input('stok');
             $barang->satuan = $request->input('satuan');
 
             if ($request->hasFile('foto_barang')) {
                 $foto_barang = $request->file('foto_barang');
-                $foto_barang_name = $foto_barang->getClientOriginalName();  // Mendapatkan nama asli file
-                $barang->foto_barang = $foto_barang->storeAs('foto_barang', $foto_barang_name, 'public');  // Menyimpan dengan nama asli
+                $foto_barang_name = $foto_barang->getClientOriginalName();
+                $barang->foto_barang = $foto_barang->storeAs('foto_barang', $foto_barang_name, 'public');
             }
 
-            $barang->barcode = $barcodePath;
-
-            // Simpan ke database
+            // Menyimpan path QR Code ke dalam database
+            $barang->barcode = $qrCodePath;
             $barang->save();
 
-
-            // Redirect ke halaman lain
-            return redirect()->back()->withErrors(['msg' => 'Berhasil Menambahkan Akun.']);
+            return redirect()->back()->with('msg', 'Berhasil Menambahkan Barang.');
         } catch (\Exception $e) {
             Log::error('Gagal : ' . $e->getMessage());
-            return redirect()->back()->withErrors(['msg' => 'Gagal menambahkan akun. Silakan coba lagi.']);
+            return redirect()->back()->withErrors(['msg' => 'Gagal menambahkan barang. Silakan coba lagi.']);
         }
     }
 
@@ -138,7 +133,7 @@ class BarangController extends BaseController
         // Mengembalikan view dengan data pengguna dan level
         echo view('header');
         echo view('menu');
-        echo view('e_barang', compact( 'barang'));
+        echo view('e_barang', compact('barang'));
         echo view('footer');
     }
 
@@ -166,7 +161,7 @@ class BarangController extends BaseController
             $barang->nama_barang = $request->nama_barang;
             $barang->stok = $request->stok;
             $barang->satuan = $request->satuan;
-         
+
             if ($request->hasFile('foto_barang')) {
                 $foto_barang = $request->file('foto_barang');
                 $foto_barang_name = $foto_barang->getClientOriginalName();
@@ -186,6 +181,40 @@ class BarangController extends BaseController
         }
     }
 
-   
 
+    public function scan(Request $request)
+    {
+        $kode_barang = $request->input('kode_barang');
+
+        // Debugging input
+        Log::info("Barcode yang diterima: " . $kode_barang);
+
+        // Cek apakah barcode ada di database
+        $barang = Barang::where('kode_barang', $kode_barang)->first();
+
+        if ($barang) {
+            return redirect()->back()->with('success', 'Barang ditemukan: ' . $barang->nama_barang);
+        } else {
+            Log::warning("Barcode tidak ditemukan di database: " . $kode_barang);
+            return redirect()->back()->withErrors(['msg' => 'Barang tidak ditemukan. Silakan coba lagi.']);
+        }
+    }
+
+    public function getBarangByKode($kode_barang)
+    {
+        // Ambil data barang berdasarkan kode_barang
+        $barang = Barang::where('kode_barang', $kode_barang)->first();
+
+        if ($barang) {
+            // Jika barang ditemukan, kembalikan data dalam format JSON
+            return response()->json([
+                'nama_barang' => $barang->nama_barang,
+                'stok' => $barang->stok,
+                'satuan' => $barang->satuan,
+                'foto_barang' => $barang->foto_barang, // Jika ada foto, kirimkan URL foto
+            ]);
+        } else {
+            return response()->json(null); // Jika barang tidak ditemukan
+        }
+    }
 }

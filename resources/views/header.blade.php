@@ -32,6 +32,8 @@
     <!-- RTL Css -->
     <link rel="stylesheet" href="{{ asset('css/rtl.min.css" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 
 </head>
 

@@ -129,3 +129,6 @@ Route::get('/laporan', [DataController::class, 'laporan'])
 ->middleware('check.permission:data')
     ->name('laporan');
 Route::get('/laporan_index', [DataController::class, 'index'])->name('laporan.index');
+
+
+Route::get('/barang/{kode_barang}', [BarangController::class, 'getBarangByKode'])->name('barang.getByKode');
